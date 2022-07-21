@@ -1,4 +1,8 @@
-# BoilerplateAngular
+# Testando Angular com Jest
+
+Estudando testes pelo livro: https://testing-angular.com/
+
+Projeto iniciado com o Boilerplaite https://github.com/natalialuizads/boilerplate-angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.2.
 
