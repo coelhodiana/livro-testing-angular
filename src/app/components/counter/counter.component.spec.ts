@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { click, expectText, findEl } from '../../spec-helpers/element.spec-helper';
+import { click, expectText, findEl, setFieldValue } from '../../spec-helpers/element.spec-helper';
 import { CounterComponent } from './counter.component';
 
 describe('CounterComponent', () => {
@@ -47,4 +47,15 @@ describe('CounterComponent', () => {
 
     expectText(fixture, 'count', '-1');
   });
+
+  it('Dado o resetInput, quando for preenchido com um valor e o botão reset for clicado, então o valor de count deve ser o valor fornacido ', () => {
+    setFieldValue(fixture, 'reset-input', '123');
+
+    click(fixture, 'reset-button');
+
+    fixture.detectChanges();
+
+    expectText(fixture, 'count', '123');
+  });
+
 });
