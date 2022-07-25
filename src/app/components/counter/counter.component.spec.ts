@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 
+import { click, expectText, findEl } from '../../spec-helpers/element.spec-helper';
 import { CounterComponent } from './counter.component';
 
 describe('CounterComponent', () => {
@@ -11,9 +11,8 @@ describe('CounterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CounterComponent ]
-    })
-    .compileComponents();
+      declarations: [CounterComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -28,32 +27,24 @@ describe('CounterComponent', () => {
   });
 
   it('Dado o contador, quando for renderizado pela primeira vez, deve exibir o valor inicial', () => {
-    const countOutput = debugElement.query(By.css('[data-testid="count"]'));
+    findEl(fixture, 'count');
 
-    expect(countOutput.nativeElement.textContent).toBe('0');
-  })
+    expectText(fixture, 'count', '0');
+  });
 
   it('Dado o botão incrementar, quando for clicado, deve incrementar o valor do input', () => {
-    const buttonIncrement = debugElement.query(By.css('[data-testid="increment-button"]'));
-
-    const countOutput = debugElement.query(By.css('[data-testid="count"]'));
-
-    buttonIncrement.triggerEventHandler('click', null);
+    click(fixture, 'increment-button');
 
     fixture.detectChanges();
 
-    expect(countOutput.nativeElement.textContent).toBe('1');
-  })
+    expectText(fixture, 'count', '1');
+  });
 
-  it('Dado o botão decrementar, quando for clicado, deve decrementar o valor do input', ()=>{
-    const buttonDecrement = debugElement.query(By.css('[data-testid="decrement-button"]'));
-
-    const countOutput = debugElement.query(By.css('[data-testid="count"]'));
-
-    buttonDecrement.triggerEventHandler('click', null);
+  it('Dado o botão decrementar, quando for clicado, deve decrementar o valor do input', () => {
+    click(fixture, 'decrement-button');
 
     fixture.detectChanges();
 
-    expect(countOutput.nativeElement.textContent).toBe('-1');
-  })
+    expectText(fixture, 'count', '-1');
+  });
 });
