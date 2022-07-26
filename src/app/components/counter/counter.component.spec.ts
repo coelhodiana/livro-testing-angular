@@ -8,6 +8,7 @@ describe('CounterComponent', () => {
   let component: CounterComponent;
   let fixture: ComponentFixture<CounterComponent>;
   let debugElement: DebugElement;
+  const startCount = 123;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,7 +19,8 @@ describe('CounterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CounterComponent);
     component = fixture.componentInstance;
-    debugElement = fixture.debugElement;
+    component.startCount = startCount;
+    component.ngOnChanges();
     fixture.detectChanges();
   });
 
@@ -29,7 +31,7 @@ describe('CounterComponent', () => {
   it('Dado o contador, quando for renderizado pela primeira vez, deve exibir o valor inicial', () => {
     findEl(fixture, 'count');
 
-    expectText(fixture, 'count', '0');
+    expectText(fixture, 'count', String(startCount));
   });
 
   it('Dado o botão incrementar, quando for clicado, deve incrementar o valor do input', () => {
@@ -37,7 +39,7 @@ describe('CounterComponent', () => {
 
     fixture.detectChanges();
 
-    expectText(fixture, 'count', '1');
+    expectText(fixture, 'count', String(startCount + 1));
   });
 
   it('Dado o botão decrementar, quando for clicado, deve decrementar o valor do input', () => {
@@ -45,7 +47,7 @@ describe('CounterComponent', () => {
 
     fixture.detectChanges();
 
-    expectText(fixture, 'count', '-1');
+    expectText(fixture, 'count', String(startCount - 1));
   });
 
   it('Dado o resetInput, quando for preenchido com um valor e o botão reset for clicado, então o valor de count deve ser o valor fornacido ', () => {
@@ -58,4 +60,17 @@ describe('CounterComponent', () => {
     expectText(fixture, 'count', '123');
   });
 
+  it('Dado o resetInput, quando preenchido com NaN e o botão reset for clicado, então o valor de count deve permanecer inalterado', () => {
+
+    const value = 'NaN';
+
+    setFieldValue(fixture, 'reset-input', value);
+
+    click(fixture, 'reset-button');
+
+    fixture.detectChanges();
+
+    expectText(fixture, 'count', String(startCount));
+
+  });
 });
