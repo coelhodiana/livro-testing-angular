@@ -61,7 +61,6 @@ describe('CounterComponent', () => {
   });
 
   it('Dado o resetInput, quando preenchido com NaN e o botão reset for clicado, então o valor de count deve permanecer inalterado', () => {
-
     const value = 'NaN';
 
     setFieldValue(fixture, 'reset-input', value);
@@ -71,6 +70,49 @@ describe('CounterComponent', () => {
     fixture.detectChanges();
 
     expectText(fixture, 'count', String(startCount));
+  });
 
+  it('Dado o reset-input, quando o valor for incrementado, então countChange deve emitir o novo valor', () => {
+    let actualCount: number | undefined;
+
+    component.countChange.subscribe({
+      next: (count: number) => {
+        actualCount = count;
+      }
+    })
+
+    click(fixture, 'increment-button');
+
+    expect(actualCount).toBe(124);
+  });
+
+  it('Dado o reset-input, quando o valor for decrementado, então countChange deve emitir o novo valor', () => {
+    let actualCount: number | undefined;
+
+    component.countChange.subscribe({
+      next: (count: number) => {
+        actualCount = count;
+      }
+    })
+
+    click(fixture, 'decrement-button');
+
+    expect(actualCount).toBe(122);
+  });
+
+  it('Dado o reset-input, quando o valor for resetado, então countChange deve emitir o novo valor', () => {
+    const newCount = 123;
+
+    let actualCount: number | undefined;
+    component.countChange.subscribe({
+      next: (count: number) => {
+        actualCount = count;
+      }
+    })
+
+    setFieldValue(fixture, 'reset-input', String(newCount))
+    click(fixture, 'reset-button');
+
+    expect(actualCount).toBe(newCount);
   });
 });
