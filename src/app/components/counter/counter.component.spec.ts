@@ -1,5 +1,6 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { take, toArray } from 'rxjs';
 
 import { click, expectText, findEl, setFieldValue } from '../../spec-helpers/element.spec-helper';
 import { CounterComponent } from './counter.component';
@@ -9,6 +10,7 @@ describe('CounterComponent', () => {
   let fixture: ComponentFixture<CounterComponent>;
   let debugElement: DebugElement;
   const startCount = 123;
+  const newCount = 123;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,47 +74,68 @@ describe('CounterComponent', () => {
     expectText(fixture, 'count', String(startCount));
   });
 
-  it('Dado o reset-input, quando o valor for incrementado, então countChange deve emitir o novo valor', () => {
-    let actualCount: number | undefined;
+  // it('Dado o reset-input, quando o valor for incrementado, então countChange deve emitir o novo valor', () => {
+  //   let actualCount: number | undefined;
 
-    component.countChange.subscribe({
-      next: (count: number) => {
-        actualCount = count;
+  //   component.countChange.subscribe({
+  //     next: (count: number) => {
+  //       actualCount = count;
+  //     }
+  //   })
+
+  //   click(fixture, 'increment-button');
+
+  //   expect(actualCount).toBe(124);
+  // });
+
+  // it('Dado o reset-input, quando o valor for decrementado, então countChange deve emitir o novo valor', () => {
+  //   let actualCount: number | undefined;
+
+  //   component.countChange.subscribe({
+  //     next: (count: number) => {
+  //       actualCount = count;
+  //     }
+  //   })
+
+  //   click(fixture, 'decrement-button');
+
+  //   expect(actualCount).toBe(122);
+  // });
+
+  // it('Dado o reset-input, quando o valor for resetado, então countChange deve emitir o novo valor', () => {
+  //   const newCount = 123;
+
+  //   let actualCount: number | undefined;
+  //   component.countChange.subscribe({
+  //     next: (count: number) => {
+  //       actualCount = count;
+  //     }
+  //   })
+
+  //   setFieldValue(fixture, 'reset-input', String(newCount))
+  //   click(fixture, 'reset-button');
+
+  //   expect(actualCount).toBe(newCount);
+  // });
+
+  it('Dado o reset-input, quando o count for atualizado, deve disparar o countChange', () => {
+
+    let actualCounts: number[] | undefined;
+
+    component.countChange.pipe(
+      take(3),
+      toArray()
+    ).subscribe({
+      next: (counts) => {
+        actualCounts = counts;
       }
-    })
+    });
 
     click(fixture, 'increment-button');
-
-    expect(actualCount).toBe(124);
-  });
-
-  it('Dado o reset-input, quando o valor for decrementado, então countChange deve emitir o novo valor', () => {
-    let actualCount: number | undefined;
-
-    component.countChange.subscribe({
-      next: (count: number) => {
-        actualCount = count;
-      }
-    })
-
     click(fixture, 'decrement-button');
-
-    expect(actualCount).toBe(122);
-  });
-
-  it('Dado o reset-input, quando o valor for resetado, então countChange deve emitir o novo valor', () => {
-    const newCount = 123;
-
-    let actualCount: number | undefined;
-    component.countChange.subscribe({
-      next: (count: number) => {
-        actualCount = count;
-      }
-    })
-
-    setFieldValue(fixture, 'reset-input', String(newCount))
+    setFieldValue(fixture, 'reset-input', String(newCount));
     click(fixture, 'reset-button');
 
-    expect(actualCount).toBe(newCount);
-  });
+    expect(actualCounts).toEqual([startCount + 1, startCount, newCount]);
+  })
 });
