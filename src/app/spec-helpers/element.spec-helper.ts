@@ -69,3 +69,10 @@ export function setFieldValue<T>(
     value
   );
 }
+
+export function findComponent<T>(
+  fixture: ComponentFixture<T>,
+  selector: string,
+): DebugElement {
+  return fixture.debugElement.query(By.css(selector));
+}
