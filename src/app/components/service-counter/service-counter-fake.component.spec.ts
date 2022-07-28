@@ -5,7 +5,7 @@ import { CounterService } from '../../services/counter.service';
 import { click, expectText, setFieldValue } from '../../spec-helpers/element.spec-helper';
 import { ServiceCounterComponent } from './service-counter.component';
 
-describe('', () => {
+describe('ServiceCounterComponent: unit test', () => {
   let component: ServiceCounterComponent;
   let fixture: ComponentFixture<ServiceCounterComponent>;
 
@@ -53,3 +53,4 @@ describe('', () => {
     expect(fakeCounterService.reset).toHaveBeenCalledWith(newCount);
   });
 });
+
