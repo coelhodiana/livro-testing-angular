@@ -5,12 +5,14 @@ import { CounterComponent } from '../../src/app/components/counter/counter.compo
 import { HomeComponent } from '../../src/app/components/home/home.component';
 import { NgRxCounterComponent } from '../../src/app/components/ngrx-counter/ngrx-counter.component';
 import { ServiceCounterComponent } from '../../src/app/components/service-counter/service-counter.component';
+import { SignupFormComponent } from './components/signup-form/signup-form.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'counter-component', component: CounterComponent },
   { path: 'service-counter-component', component: ServiceCounterComponent },
   { path: 'ngrx-counter-component', component: NgRxCounterComponent },
+  { path: 'signup', component: SignupFormComponent}
 ];
 
 @NgModule({

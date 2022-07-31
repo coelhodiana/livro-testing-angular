@@ -1,4 +1,6 @@
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { click, setFieldValue } from '../../spec-helpers/element.spec-helper';
@@ -10,6 +12,7 @@ describe('ServiceCounterComponent: unit test with minimal Service logic', () => 
 
   let component: ServiceCounterComponent;
   let fixture: ComponentFixture<ServiceCounterComponent>;
+  let debugElement: DebugElement;
 
   let fakeCount$: BehaviorSubject<number>;
   let fakeCounterService: Pick<CounterService, keyof CounterService>;
@@ -46,8 +49,16 @@ describe('ServiceCounterComponent: unit test with minimal Service logic', () => 
 
     fixture = TestBed.createComponent(ServiceCounterComponent);
     component = fixture.componentInstance;
+    debugElement = fixture.debugElement;
     fixture.detectChanges();
   });
+
+  it('', () => {
+    const count = debugElement.query(By.css('[data-testid="count"]'));
+
+    expect(count.nativeElement.textContent).toBe('0');
+    expect(fakeCounterService.getCount).toHaveBeenCalled();
+  })
 
   it('does not reset if the value is not a number', () => {
     const value = 'not a number';

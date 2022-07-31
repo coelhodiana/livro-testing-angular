@@ -23,7 +23,6 @@ const USERNAME_REGEXP = /^[a-zA-Z0-9.]+$/;
 /**
  * Allowed origins
  */
-const ALLOWED_ORIGINS = ['https://molily.github.io'];
 
 /**
  * Available plans
@@ -58,7 +57,7 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS
-app.use(cors({ origin: ALLOWED_ORIGINS }));
+app.use(cors({ origin: '*' }));
 
 // Enable API limiter
 const apiLimiter = rateLimit({
@@ -69,7 +68,7 @@ const apiLimiter = rateLimit({
 });
 app.use(apiLimiter);
 
-app.post('/password-strength', (req, res) => {
+app.post('/api/password-strength', (req, res) => {
   const { password } = req.body;
   if (!isPasswordSyntaxValid(password)) {
     res.sendStatus(400);
@@ -83,7 +82,7 @@ app.post('/password-strength', (req, res) => {
   });
 });
 
-app.post('/username-taken', (req, res) => {
+app.post('/api/username-taken', (req, res) => {
   const { username } = req.body;
   if (!isUsernameSyntaxValid(username)) {
     res.sendStatus(400);
@@ -92,7 +91,7 @@ app.post('/username-taken', (req, res) => {
   res.send({ usernameTaken: isUsernameTaken(username) });
 });
 
-app.post('/email-taken', (req, res) => {
+app.post('/api/email-taken', (req, res) => {
   const { email } = req.body;
   if (!isEmailSyntaxValid(email)) {
     res.sendStatus(400);
@@ -135,7 +134,7 @@ const validateSignup = (body) => {
   return { valid: true };
 };
 
-app.post('/signup', (req, res) => {
+app.post('/api/signup', (req, res) => {
   const validationResult = validateSignup(req.body);
   if (!validationResult.valid) {
     res.status(400).send({ error: validationResult.error });
